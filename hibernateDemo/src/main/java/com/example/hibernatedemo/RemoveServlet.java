@@ -22,32 +22,24 @@ public class RemoveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("The POST request has been made to /Hello");
+        System.out.println("The POST request has been made to RemoveServlet /Remove");
 
         // get ID to remove from the user form
         String idToRemove = request.getParameter("removeTask");
 
-        // FIXME used for testing
-        System.out.println(idToRemove);
-
+        // begins a transaction to remove an element from DB based on the task ID
         transaction.begin();
-
-        //convert idToRemove to int if needed
         toDoListEntity = entityManager.find(ToDoListEntity.class, idToRemove);
         entityManager.persist(toDoListEntity);
         entityManager.remove(toDoListEntity);
-
         transaction.commit();
+
+        // Goes back to the todolist page
+        response.sendRedirect("index.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        System.out.println("The GET request has been made to /Hello");
-
-        response.setContentType("text/plain");
-
-        response.getWriter().println("<h1>Hello!<h1/>");
-        response.getWriter().println("<p>welcome to my website</p>");
     }
 }

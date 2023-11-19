@@ -1,5 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+
 <html>
 <body>
 
@@ -17,7 +20,20 @@
     <input type="submit" value="Submit"/>
 </form>
 
-<!-- View -->
+<form action="${pageContext.request.contextPath}/ViewList" method="get">
+    <input type="submit" value="Get List">
+</form>
+
+<table>
+    <c:forEach items="${tasks}" var="task">
+        <tr>
+            <td>${task}</td>
+        </tr>
+    </c:forEach>
+</table>
+
+
+
 
 </body>
 </html>

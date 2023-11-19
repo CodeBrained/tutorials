@@ -15,22 +15,33 @@ import entity.ToDoListEntity;
 public class AddServlet extends HttpServlet {
 
     // Creating objects to persist to the database
-    public ToDoListEntity toDoListEntity = new ToDoListEntity();
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    EntityTransaction transaction = entityManager.getTransaction();
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("The POST request has been made to addServlet /Hello");
+        System.out.println("The POST request has been made to AddServlet /Add");
+        ToDoListEntity toDoListEntity = new ToDoListEntity();
 
+        // Creates EntityManager object to handle persistence
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        // Get task to add and print to console for testing purposes
         String task = request.getParameter("addTask");
         System.out.println(task);
 
+        // begins a transaction to persist to the DB
         transaction.begin();
         toDoListEntity.setTask(task);
         entityManager.persist(toDoListEntity);
         transaction.commit();
+
+        //closing the entityManager object prevents a resource leak
+        entityManager.close();
+
+        // Goes back to the todolist page
+        response.sendRedirect("index.jsp");
     }
 
     @Override
